@@ -1,0 +1,33 @@
+<!-- profile.html -->
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+<h1>{{ profile_user.username }}'s Profile</h1>
+<p>Followers: {{ followers_count }}</p>
+<p>Following: {{ following_count }}</p>
+
+{% if user != profile_user %}
+    {% if is_following %}
+    <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Unfollow</button>
+    </form>
+    {% else %}
+    <form action="{% url 'follow_user' profile_user.username %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Follow</button>
+    </form>
+    {% endif %}
+{% endif %}
+
+<h2>Posts</h2>
+<ul>
+    {% for post in user_posts %}
+        <li>{{ post.text }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

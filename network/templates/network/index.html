@@ -1,0 +1,175 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block additional_head %}
+    <link rel="stylesheet" href="https://mincss.com/entireframework.min.css" crossorigin="anonymous"/>
+
+    <style>
+        body {
+          background-color: black !important;
+          color: #CEB888;
+        }
+        .editpost {
+            display: none;
+        }
+
+
+       /*  textarea,
+        input[type=text] {
+          -webkit-appearance: initial !important;
+          width: 100%;
+        }
+        .form-login { width: 12rem !important; } */
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+<h5>New post</h5>
+<form id="post-form" action="{% url 'post' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_div}}
+    <input type="submit" value="Post">
+</form>
+{% endif %}
+
+<h5>All posts</h5>
+
+{% for post in posts %}
+
+    <div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <p><b><a href="{% url 'profile' post.user.username %}">{{ post.user }}</a></b></p>
+            <p>{{ post.timestamp }}<b> | </b>Rec'd<b> | </b><span value="{{ post.user.likes }}" id="like-count-{{ post.id }}">{{ post.user.likes }}</span></p>
+        </div>
+        <p id="content_{{ post.id }}">{{ post.text }}</p>
+    </div>
+
+    {% if user == post.user %}
+
+    <button onclick="displayEditForm({{ post.id }})" data-target="#edit_post_{{ post.id }}">Edit</button>
+
+    <div id="edit_post_{{ post.id }}" style="display: none;">
+        <h5>Edit Post</h5>
+        <textarea id="textarea_{{ post.id }}" class="form-control" name="content">{{ post.content }}</textarea>
+        <button type="button" onclick="editpost({{ post.id }})">Save edits</button>
+    </div>
+    {% else %}
+    <button class="like-button" data-post-id="{{ post.id }}" onclick="toggleLikes({{ post.id }}, 'like')">Like</button>
+    {% endif %}
+
+    {% empty %}
+    <p>Be the first to post your thoughts!</p>
+
+{% endfor %}
+
+{% if page_obj.has_other_pages %}
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }} <span class="sr-only">(current)</span></span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+<script>
+
+    // Fetch updated like counts for all posts
+    window.addEventListener('load', function() {
+        fetchLikeCountsAll();
+    });
+
+    function fetchLikeCountsAll() {
+
+        const postIds = Array.from(document.querySelectorAll('[id^="like-count-"]')).map(element => element.id.split('-')[2]);
+
+        postIds.forEach(postId => {
+            fetch(`/get_like_count/${postId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const likeCountSpan = document.getElementById(`like-count-${postId}`);
+                    if (likeCountSpan) {
+                        likeCountSpan.textContent = data.likes;
+                    }
+                })
+                .catch(error => console.error('Error fetching like count:', error));
+        });
+    }
+
+    function toggleLikes(postId, action) {
+        const likeCountSpan = document.getElementById(`like-count-${postId}`);
+        const likeButton = document.querySelector(`[data-post-id="${postId}"]`);
+        //console.log('likeButton: ', likeButton)
+
+        fetch(`/toggle_likes/${postId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) { console.error(data.error); }
+            else {
+                likeCountSpan.textContent = data.likes;
+                if (action === 'like') { likeButton.textContent = data.liked ? 'Unlike' : 'Like'; }
+                else { likeButton.textContent = data.liked ? 'Like' : 'Unlike'; }
+            }
+        })
+        .catch(error => {
+            console.error('Error toggling like:', error);
+        });
+    }
+
+    function displayEditForm(id)  {
+            const editPostForm = document.getElementById(`edit_post_${id}`);
+            editPostForm.style.display = 'block';
+    }
+
+    function editpost(id) {
+        const textareaValue = document.getElementById(`textarea_${id}`).value;
+        const content = document.getElementById(`content_${id}`);
+        const editPostForm = document.getElementById(`edit_post_${id}`);
+
+        fetch(`/edit/${id}`, {
+            method: "POST",
+            headers: { "Content-type": "application/json", "X-CSRFToken": '{{ csrf_token }}' },
+            body: JSON.stringify({ content: textareaValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+            content.innerHTML = data.data;
+            editPostForm.style.display = 'none';
+        })
+    }
+</script>
+
+{% endblock %}
