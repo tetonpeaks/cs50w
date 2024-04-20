@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h4>Watchlist</h4>
+    {% for listing in watchlist %}
+        <div>
+
+            <a href="{% url 'listing' listing.id %}">
+                <img src="{{ listing.image_url }}" style="width: 240px; height: 240px;">
+            </a>
+            <div>
+                <h3><a href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+                <div><span>Description: </span>{{ listing.description }}</div>
+                <div><span>Lister: </span>{{ listing.user }}</div>
+                {% if listing.category %}
+                <div><span>Category: </span>{{ listing.category | title }}</div>
+                {% else %}
+                <div><span>Category: </span>Not listed.</div>
+                {% endif %}
+                {% if listing.current_price %}
+                <div><span>Current price:</span>${{ listing.current_price }}</div>
+                {% else %}
+                <div><span>Current price:</span>Not specified</div>
+                {% endif %}
+
+                {% if listing.is_watched %}
+                <a href="{% url 'unwatch' listing.id %}"><i>Unwatch</i></a>
+                {% else %}
+                <a href="{% url 'watch' listing.id %}"><i>Watch</i></a>
+                {% endif %}
+            </div>
+
+        </div>
+    {% endfor %}
+{% endblock %}

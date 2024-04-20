@@ -1,0 +1,77 @@
+
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div>
+
+    <div>
+        <h4>{{ listing.title }}</h4>
+        <p>{{ listing.description }}</p>
+
+        <div>
+            <p><b>Lister: </b> {{ listing.user }}</p>
+            <p>
+                {% if listing.current_price %}
+                <p><b>Current price: </b>${{ listing.current_price }}</p>
+                {% else %}
+                <p ><b>Current price: </b>Not Specified</p>
+                {% endif %}
+            {% if listing.category %}
+            <p><b>Category: </b> {{ listing.category | title }}</p>
+            {% else %}
+            <p><b>Category: </b> Not listed.</p>
+            {% endif %}
+        </div>
+
+        <div><img src="{{ listing.image_url }}" style="width: 50%; max-height: 375px; object-fit: contain;"></div>
+    </div>
+
+    <div>
+        {% if not isOwner %}
+        <form action="{% url 'bid' listing.id %}" method="POST">
+            {% csrf_token %}
+            <div style="display: flex; flex-direction: row; width: 25%">
+                {% if bid.bid is None %}
+                <input required type="number" min="{{ bid.bid }}" step="0.01" class="form-control"
+                name="bid" placeholder="0.00">
+                {% else %}
+                <input required type="number" min="{{ bid.bid }}" step="0.01" class="form-control"
+                name="bid" placeholder="Top bid: ${{ bid.bid }}" style="width: 50%">
+                {% endif %}
+                <button type="submit">Bid</button>
+            </div>
+        </form>
+        {% else %}
+        <form action="{% url 'closelisting' listing.id %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <div>
+                    <button type="submit">Close listing</button>
+                </div>
+        </form>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <form action="{% url 'comment' id=listing.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="current_price">Comment</label>
+                <input id="current_price" type="text" name="comment" placeholder="Comment">
+                <button type="submit">Comment</button>
+            </div>
+        </form>
+        {% endif %}
+        <h5>Comments</h5>
+
+        {% for comment in comments %}
+        <div>
+            <div><p>{{ comment.user }}</p></div>
+            <div><p>{{ comment.text }}</p></div>
+        </div>
+        {% empty %}
+        <p>No comments for this listing yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
