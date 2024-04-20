@@ -78,7 +78,7 @@ def compose(request):
 
 @login_required
 def mailbox(request, mailbox):
-    print("request =", request, "mailbox =", mailbox)
+    #print("request =", request, "mailbox =", mailbox)
 
     # Filter emails returned based on mailbox
     if mailbox == "inbox":
@@ -114,7 +114,6 @@ def email(request, email_id):
     # Return email contents
     if request.method == "GET":
         return JsonResponse(email.serialize())
-        print(email)
 
     # Update whether email is read or should be archived
     elif request.method == "PUT":

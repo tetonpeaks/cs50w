@@ -5,7 +5,6 @@ from django.db import models
 class User(AbstractUser):
     pass
 
-
 class Email(models.Model): #ForeignKey, ManytoMany, CharField, etc...are types of fields in Django
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="emails") #ForeignKey references another table, CASCADE deletes references/links, related_name is arg that allows access to relationship in reverse
     sender = models.ForeignKey("User", on_delete=models.PROTECT, related_name="emails_sent")
