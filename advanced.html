@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Advanced Search</title>
+    </head>
+    <style>
+        body {
+            background-color: #202124;
+            font-size: 16px;
+        }
+        h3 { margin-bottom: 1rem; }
+        .container0 {
+            display: grid;
+            grid-template-rows: repeat(2, auto);
+            grid-gap: 1rem;
+        }
+        .wrapper-btn {
+            grid-row: 1;
+            display: flex;
+            justify-content: flex-end;
+            border-bottom: 2px solid white;
+            padding-bottom: 0.5rem;
+        }
+        .search.index { margin-right: 0.5rem; }
+        .google-search {
+            grid-row: 2;
+            justify-self: left;
+
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            grid-gap: 2rem;
+
+            color: white;
+        }
+        .col0 {
+            grid-column: 1;
+            display: grid;
+            grid-template-rows: repeat(5, auto);
+            color: #969ba1;
+        }
+        form {
+            grid-column: 2;
+            display: grid;
+            grid-template-rows: repeat(5, auto);
+            color: white;
+        }
+
+        .form-group { padding-bottom: 1rem;}
+
+        .form-control {
+            width: 350%;
+            background-color: #202124;
+            border: 1px solid #969ba1;
+            color: white;
+        }
+
+        .query.submit {
+            grid-row: 5;
+            background-color: #8ab4f8;
+            color: white;
+            padding: 0rem;
+
+            transform: translateX(255%)
+        }
+    </style>
+    <body>
+        <div class="container0">
+            <div class="wrapper-btn">
+                <form action="index.html">
+                    <button class="search index">Google Search</button>
+                </form>
+            </div>
+
+            <div class="google-search">
+                <h3>Find pages with...</h3>
+                <div class="col0">
+                    <div class="form-text">all these words:</div>
+                    <div class="form-text">this exact word or phrase:</div>
+                    <div class="form-text">any of these words:</div>
+                    <div class="form-text">none of these words:</div>
+                </div>
+                <form action="https://www.google.com/search">
+                    <div class="form-group all">
+                        <input class="form-control all" type="text" name="as_q" value="hockey soccer">
+                    </div>
+                    <div class="form-group exact">
+                        <input class="form-control exact" type="text" name="as_epq" value="wayne zidane">
+                    </div>
+                    <div class="form-group any">
+                        <input class="form-control any" type="text" name="as_oq" value="hockey soccer">
+                    </div>
+                    <div class="form-group none">
+                        <input class="form-control none" type="text" name="as_eq" value="golf">
+                    </div>
+                    <input class="query submit" type="submit" value="Advanced Search">
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>

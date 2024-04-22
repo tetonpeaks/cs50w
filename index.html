@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Search</title>
+    </head>
+    <style>
+        body {
+            background-color: black;
+            font-size: 16px;
+        }
+        .container0 {
+            display: grid;
+            grid-template-rows: repeat(2, auto);
+            grid-gap: 1rem;
+        }
+        .wrapper-btn {
+            grid-row: 1;
+            display: flex;
+            justify-content: flex-end;
+            border-bottom: 2px solid white;
+            padding-bottom: 0.5rem;
+        }
+        .search.image { margin-right: 0.5rem; }
+        .google-search {
+            grid-row: 2;
+            justify-self: center;
+
+            display: grid;
+            grid-template-rows: repeat(2, auto);
+
+            width: 50%;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .query.standard {
+            border-radius: 0.25rem;
+        }
+        .query.submit { margin-top: 1rem; }
+        .query.submit.lucky { margin-top: 1rem; }
+    </style>
+    <body>
+        <div class="container0">
+            <div class="wrapper-btn">
+                <form action="image.html">
+                    <button class="search image">Google Image Search</button>
+                </form>
+                <form action="advanced.html">
+                    <button class="search adv">Google Advanced Search</button>
+                </form>
+            </div>
+
+            <div class="google-search">
+                <form action="https://google.com/search">
+                    <input class="query standard" type="text" name="q">
+                    <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                        <input class="query submit" type="submit" value="Google Search">
+                        <input class="query submit lucky" type="submit" name="btnI" value="I'm Feeling Lucky">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>

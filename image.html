@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Image Search</title>
+    </head>
+    <style>
+        body {
+            background-color: black;
+            font-size: 16px;
+        }
+        .container0 {
+            display: grid;
+            grid-template-rows: repeat(2, auto);
+            grid-gap: 1rem;
+        }
+        .wrapper-btn {
+            grid-row: 1;
+            display: flex;
+            justify-content: flex-end;
+            border-bottom: 2px solid white;
+            padding-bottom: 0.5rem;
+        }
+        .search.index { margin-right: 0.5rem; }
+        .google-search {
+            grid-row: 2;
+            justify-self: center;
+
+            display: grid;
+            grid-template-rows: repeat(2, auto);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .query.image {
+            border-radius: 0.25rem;
+        }
+        .query.submit { margin-top: 1rem; }
+    </style>
+    <body>
+        <div class="container0">
+            <div class="wrapper-btn">
+                <form action="index.html">
+                    <button class="search index">Google Search</button>
+                </form>
+            </div>
+
+            <div class="google-search">
+                <form action="https://images.google.com/search">
+                    <input hidden="true" name="tbm" value="isch">
+                    <input class="query image" type="text" name="q" value="hockey">
+                    <input class="query submit" type="submit" value="Google Image Search">
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>
