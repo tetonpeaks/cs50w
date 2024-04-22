@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet">
+    </head>
+    <style>
+        body {
+            color: #CEB888;
+            background-color: black;
+            padding: 0.5rem;
+        }
+        a {
+            color: rgba(253, 181, 21, 1);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .wikilist {
+            color: rgba(0, 51, 102, 1)
+        }
+    </style>
+    <body>
+        <div>
+            <div>
+                <div style="margin-top: 0.5rem; display: flex; position: relative; justify-content: center;"><h2>Boilermaker WikiBear</h2></div>
+                <div style="margin-top: 0.0rem; display: flex; position: relative; justify-content: center;">
+                    <form action="{% url 'search' %}">
+                        <input class="search" type="text" name="q" placeholder="Search WikiBear" style="width: 100%; margin-bottom: 0.5rem";>
+                    </form>
+                </div>
+                <div style="
+                    width: 40%;
+                    display: grid;
+                    position: relative;
+                    grid-template-columns: repeat(3, auto);
+                    justify-content: center;
+                    grid-gap: 1rem;
+                    ">
+                    <div>
+                        <a href="{% url 'index' %}">Home</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'newwiki' %}">Create WikiBear</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'randomwiki' %}">Random WikiBear</a>
+                    </div>
+                </div>
+                {% block nav %}
+                {% endblock %}
+            </div>
+            <div>
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </body>
+</html>

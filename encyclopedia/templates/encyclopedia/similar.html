@@ -1,0 +1,18 @@
+{% extends 'encyclopedia/layout.html' %}
+
+{% block title %}
+    Similar Results
+{% endblock title %}
+
+{% block body %}
+    <h5>{{ msg }}</h5>
+    {% if similar_pages %}
+        <ul>
+        {% for similar_page in similar_pages %}
+            <li><a href="wiki/{{ similar_page }}">{{ similar_page }}</a> </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        Article not found
+    {% endif %}
+{% endblock body %}
