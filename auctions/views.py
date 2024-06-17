@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
 
 from .models import User, Listing, Bid, Comment
 from .forms import ListingForm, CommentForm
@@ -26,7 +27,7 @@ class bcolors:
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.all()
+        "listings": Listing.objects.all().order_by('-timestamp'),
     })
 
 def login_view(request):
@@ -92,6 +93,7 @@ def createlisting(request):
             listing.owner = request.user # set creator to owner
             listing.active = True # activate listing
             listing.winner = ''
+            listing.timestamp = timezone.now()
             listing.save()
             return HttpResponseRedirect(reverse("index"))
     else:
@@ -108,7 +110,15 @@ def createlisting(request):
 def listing(request, id):
     if (request.user.is_authenticated):
         listing = Listing.objects.get(pk=id)
+        is_watched = request.user in listing.watchlist.all()
+
         bid = Bid.objects.filter(pk=id)
+
+        user = User.objects.get(username=request.user)
+
+        print("user: ", user)
+        print("is_watched: ", is_watched)
+        #print("user.watchlist: ", user.watchlist)
 
         comments = Comment.objects.filter(listing=listing)
         for comment in comments:
@@ -128,6 +138,7 @@ def listing(request, id):
         return render(request, 'auctions/listing.html', {
             'listing': listing,
             'user': request.user,
+            'is_watched': is_watched,
             'bid': bid,
             'comments': comments,
             'comment_form': CommentForm(),
@@ -214,25 +225,20 @@ def watchlist(request):
         "watchlist": watchlist,
     })
 
-
 @login_required
 def watch(request, id):
+    user = request.user
     listing = Listing.objects.get(pk=id)
-    listing.is_watched = True
+    listing.watchlist.add(user)
     listing.save()
-
-    request.user.watchlist.add(listing)
-    request.user.save()
 
     return HttpResponseRedirect(reverse("index"))
 
 def unwatch(request, id):
+    user = request.user
     listing = Listing.objects.get(pk=id)
-    listing.is_watched = False
+    listing.watchlist.remove(user)
     listing.save()
-
-    request.user.watchlist.remove(listing)
-    request.user.save()
 
     return HttpResponseRedirect(reverse("index"))
 

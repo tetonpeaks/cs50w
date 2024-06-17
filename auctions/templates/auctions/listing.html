@@ -2,14 +2,19 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<div>
+<div style="margin-top: 1rem;">
 
-    <div>
+    <div style="float: right;">
+        {% if is_watched %}
+        <a href="{% url 'unwatch' listing.id %}"><i>Unwatch</i></a>
+        {% else %}
+        <a href="{% url 'watch' listing.id %}"><i>Watch</i></a>
+        {% endif %}
+    </div>
         <h4>{{ listing.title }}</h4>
         <p>{{ listing.description }}</p>
-
         <div>
-            <p><b>Lister: </b> {{ listing.user }}</p>
+            <p><b>Lister: </b>{{ listing.user }}</p>
             <p>
                 {% if listing.current_price %}
                 <p><b>Current price: </b>${{ listing.current_price }}</p>
@@ -17,28 +22,47 @@
                 <p ><b>Current price: </b>Not Specified</p>
                 {% endif %}
             {% if listing.category %}
-            <p><b>Category: </b> {{ listing.category | title }}</p>
+            <p><b>Category: </b>{{ listing.category | title }}</p>
             {% else %}
-            <p><b>Category: </b> Not listed.</p>
+            <p><b>Category: </b>Not listed.</p>
             {% endif %}
         </div>
 
-        <div><img src="{{ listing.image_url }}" style="width: 50%; max-height: 375px; object-fit: contain;"></div>
+        <div><img src="{{ listing.image_url }}" style="width: 240px; height: 240px; object-fit: cover;"></div>
     </div>
 
-    <div>
+    <div style="margin-top: 0.5rem;">
         {% if not isOwner %}
-        <form action="{% url 'bid' listing.id %}" method="POST">
+        <form action="{% url 'bid' listing.id %}" method="POST" style="width: 50%">
             {% csrf_token %}
-            <div style="display: flex; flex-direction: row; width: 25%">
+            <div style="display: flex; flex-direction: row; width: 100%">
+                <button
+                    type="submit"
+                    style="
+                    width: 100%;
+                    font-style: bold;
+                    animation: pulsate 2s infinite alternate;
+                    animation-delay: 1s;
+                    transition: box-shadow 0.3s ease-in-out;
+                    margin-right: 0.5rem;
+                    ">Bid</button>
                 {% if bid.bid is None %}
-                <input required type="number" min="{{ bid.bid }}" step="0.01" class="form-control"
-                name="bid" placeholder="0.00">
+                <input
+                    required type="number"
+                    min="{{ bid.bid }}"
+                    step="0.01"
+                    class="form-control"
+                    name="bid"
+                    placeholder="0.00">
                 {% else %}
-                <input required type="number" min="{{ bid.bid }}" step="0.01" class="form-control"
-                name="bid" placeholder="Top bid: ${{ bid.bid }}" style="width: 50%">
+                <input
+                    required type="number"
+                    min="{{ bid.bid }}"
+                    step="0.01"
+                    class="form-control"
+                    name="bid"
+                    placeholder="Top bid: ${{ bid.bid }}">
                 {% endif %}
-                <button type="submit">Bid</button>
             </div>
         </form>
         {% else %}
@@ -52,12 +76,16 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-        <form action="{% url 'comment' id=listing.id %}" method="POST">
+        <form action="{% url 'comment' id=listing.id %}" method="POST" style="margin-top: 0.5rem;">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="current_price">Comment</label>
+            <div
+                class="form-group"
+                style="
+                    display: flex;
+                    flex-direction: column;
+                ">
                 <input id="current_price" type="text" name="comment" placeholder="Comment">
-                <button type="submit">Comment</button>
+                <button type="submit" style="margin-top: 0.5rem;">Comment</button>
             </div>
         </form>
         {% endif %}

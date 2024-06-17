@@ -1,12 +1,16 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h4>Categories</h4>
+    <div style="display: grid; place-items: center; margin-top: 1rem; margin-bottom: 1rem;"><h4>Categories</h4></div>
     {% for listitem in categories %}
         <form action="{% url 'category' %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="category" value="{{ listitem }}">
-            <div><button type="submit">{{ listitem }}</button></div>
+            <div>
+                <button
+                    type="submit"
+                    class="catagories">{{ listitem }}</button>
+            </div>
         </form>
     {% endfor %}
 {% endblock %}

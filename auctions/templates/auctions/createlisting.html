@@ -5,10 +5,10 @@ New listing
 {% endblock title %}
 
 {% block body %}
-    <h4>Create Listing</h4>
+    <div style="display: grid; place-items: center; margin-top: 1rem; margin-bottom: 1rem;"><h4>Create Listing</h4></div>
     <form action="{% url 'createlisting' %}" method="POST">
         {% csrf_token %}
         {{ form.as_div}}
-        <input type="submit" value="Create">
+        <input class="create" type="submit" value="Create">
     </form>
 {% endblock %}

@@ -7,22 +7,18 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
     </head>
-    <style>
-        .nav-item.loggedIn {
-            display: flex;
-            flex-direction: row;
-        }
-    </style>
     <body>
-        <h2>Auctions</h2>
-
-        <div>
-            {% if user.is_authenticated %}
-                Signed in as <strong>{{ user.username }}</strong>.
-            {% else %}
-                Not signed in.
-            {% endif %}
+        <div style="display: flex; justify-content: space-between;">
+            <h2>Auctions</h2>
+            <div>
+                {% if user.is_authenticated %}
+                    Signed in as <strong>{{ user.username }}</strong>
+                {% else %}
+                    Not signed in.
+                {% endif %}
+            </div>
         </div>
+
 
         {% if messages %}
             <ul class="messages">{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
@@ -35,14 +31,13 @@
                 <a class="nav-link" href="{% url 'watchlist' %}">Watch List</a>
                 <a class="nav-link" href="{% url 'categories' %}">Categories</a>
                 <a class="nav-link" href="{% url 'createlisting' %}">Create Listing</a>
-                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
             {% else %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
             {% endif %}
         </ul>
-        <hr>
         {% block body %}
         {% endblock %}
     </body>

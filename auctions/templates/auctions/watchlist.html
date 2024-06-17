@@ -1,15 +1,15 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h4>Watchlist</h4>
+    <div style="display: grid; place-items: center; margin-top: 1rem; margin-bottom: 1rem;"><h4>Watchlist</h4></div>
     {% for listing in watchlist %}
-        <div>
-
-            <a href="{% url 'listing' listing.id %}">
-                <img src="{{ listing.image_url }}" style="width: 240px; height: 240px;">
-            </a>
+        <div style="margin-bottom: 1.5rem">
+            <a href="{% url 'unwatch' listing.id %}" style="float: right;"><i>Unwatch</i></a>
             <div>
-                <h3><a href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+                <h5><a href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h5>
+                <a href="{% url 'listing' listing.id %}">
+                    <img src="{{ listing.image_url }}" style="width: 240px; height: 240px; object-fit: cover;">
+                </a>
                 <div><span>Description: </span>{{ listing.description }}</div>
                 <div><span>Lister: </span>{{ listing.user }}</div>
                 {% if listing.category %}
@@ -18,18 +18,11 @@
                 <div><span>Category: </span>Not listed.</div>
                 {% endif %}
                 {% if listing.current_price %}
-                <div><span>Current price:</span>${{ listing.current_price }}</div>
+                <div><span>Current price:</span><b> ${{ listing.current_price }}</b></div>
                 {% else %}
                 <div><span>Current price:</span>Not specified</div>
                 {% endif %}
-
-                {% if listing.is_watched %}
-                <a href="{% url 'unwatch' listing.id %}"><i>Unwatch</i></a>
-                {% else %}
-                <a href="{% url 'watch' listing.id %}"><i>Watch</i></a>
-                {% endif %}
             </div>
-
         </div>
     {% endfor %}
 {% endblock %}

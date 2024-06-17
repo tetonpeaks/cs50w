@@ -2,34 +2,36 @@
 
 {% block body %}
     {% if listings %}
+        <div style="margin-top: 1rem;"></div>
         {% for listing in listings %}
-        <div>
-            <h4>{{ listing.title }}</h4>
-            <p>{{ listing.description }}</p>
+            {% if listing.active %}
+            <div style="margin-bottom: 1.5rem">
+                <a href="{% url 'listing' listing.id %}"><h5>{{ listing.title }}</h5></a>
+                <div><img src="{{ listing.image_url }}" style="width: 240px; height: 240px; object-fit: cover;"></div>
+                <p>{{ listing.description }}</p>
 
-            <div>
-                <p><b>Lister: </b> {{ listing.user }}</p>
-                <p>
-                    {% if listing.current_price %}
-                    <p><b>Current price: </b>${{ listing.current_price }}</p>
+                <div>
+                    <p><b>Lister: </b> {{ listing.user }}</p>
+                    <p>
+                        {% if listing.current_price %}
+                        <p><b>Current price: </b>${{ listing.current_price }}</p>
+                        {% else %}
+                        <p ><b>Current price: </b>Not Specified</p>
+                        {% endif %}
+                    {% if listing.category %}
+                    <p><b>Category: </b> {{ listing.category | title }}</p>
                     {% else %}
-                    <p ><b>Current price: </b>Not Specified</p>
+                    <p><b>Category: </b> Not listed.</p>
                     {% endif %}
-                {% if listing.category %}
-                <p><b>Category: </b> {{ listing.category | title }}</p>
-                {% else %}
-                <p><b>Category: </b> Not listed.</p>
-                {% endif %}
+                </div>
+
+
             </div>
-
-            <div><img src="{{ listing.image_url }}" style="width: 50%; max-height: 375px; object-fit: contain;"></div>
-
-            <a href="{% url 'watch' listing.id %}"><i>Watch</i></a>
-
-        </div>
+            {% else %}
+            <h4>No listings with such category</h4>
+            {% endif %}
         {% endfor %}
-    {% else %}
-        <h4>No listings with such category</h4>
+        </div>
     {% endif %}
 
 {% endblock %}
