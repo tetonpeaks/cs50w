@@ -6,7 +6,7 @@
 {% block title %}Profile{% endblock %}
 
 {% block body %}
-<h1>{{ profile_user.username }}'s Profile</h1>
+<h5 style="color: rgba(150, 111, 51, 1);">{{ profile_user.username }}'s Profile</h5>
 <p>Followers: {{ followers_count }}</p>
 <p>Following: {{ following_count }}</p>
 
@@ -24,7 +24,7 @@
     {% endif %}
 {% endif %}
 
-<h2>Posts</h2>
+<h5 style="color: rgba(150, 111, 51, 1);">Posts</h5>
 <ul>
     {% for post in user_posts %}
         <li>{{ post.text }}</li>

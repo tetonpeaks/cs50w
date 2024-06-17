@@ -3,46 +3,120 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{% block title %}Social Network{% endblock %}</title>
+        <title>{% block title %}far out{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
     </head>
-    <body>
+    <style>
+        :root {
+            --taosurl: url('https://fatmap-digitiser-assets.imgix.net/collections/c3ab099a-82e6-4b4d-952a-b5d9a1818a46?w=2000&amp;fit=crop&amp;auto=compress%2Cformat');
+        }
+        body {
+            color: #fff;
+            background-color: black;
+            padding: 0.5rem;
+        }
+        textarea { background-color: rgba(173, 216, 230, 0.5); }
+        .postbutton {
+            float: right;
+            background-color: rgba(173, 216, 230, 1);
+        }
+        a {
+            color: rgba(144, 238, 144, 1);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* form {
+            background-color: rgba(173, 216, 230, 0.5);
+        } */
+        .nav-item.loggedIn {
+            display: flex;
+            flex-direction: row;
+        }
+        p { margin-bottom: 0.5rem !important }
+        button {
+            /* background-color: rgba(253, 181, 21, 1); */
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 0.5rem;
+            /* margin: 11px 4px; */
+            padding: 0 16px;
+            line-height: 27px;
+            height: 36px;
+            min-width: 54px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .username:hover {
+            color: rgba(144, 238, 144, 1);
+        }
+        .btn-primary,
+        a:hover,
+        .username:hover,
+        button:hover,
+        .postbutton:hover,
+        .catagories:hover,
+        .nav-link:hover,
+        .create:hover {
+            transform: scale(1.05);
+            text-decoration: none;
+        }
+        .nav {
+            box-shadow: 0 0.125rem 0.125rem -0.125rem rgb(220, 220, 220);
+            border-bottom: 0.0625rem solid rgb(220, 220, 220);
+        }
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+        }
+        .interested { grid-column: 1; }
+        .listed { grid-column: 2; }
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Network</a>
+        @keyframes pulsate {
+                0% {
+                    box-shadow: 0 0 0.25rem 0 rgba(253, 181, 21, 1);
+                }
+                100% {
+                    box-shadow: 0 0 20px 10px rgba(206,184,136,0);
+                }
+        }
+    </style>
+    <body class="bg-dark">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="{% url 'index' %}" style="color: rgba(150, 111, 51, 1);">far out</a>
 
             <div>
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'profile' user.username %}">
-                            <strong>{{ user.username }}</strong></a>
+                            <strong style="color: rgba(144, 238, 144, 1)">{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                  <a class="nav-link" href="{% url 'index' %}">all posts</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'following_posts' %}">Following</a>
+                        <a class="nav-link" href="{% url 'following_posts' %}">following</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                        <a class="nav-link" href="{% url 'logout' %}">logout</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                        <a class="nav-link" href="{% url 'login' %}">login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-link" href="{% url 'register' %}">register</a>
                     </li>
                 {% endif %}
               </ul>
             </div>
           </nav>
 
-        <div class="body">
+        <div class="body bg-dark">
             {% block body %}
             {% endblock %}
         </div>

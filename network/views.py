@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 
 from .models import User, Posts, Likes
@@ -27,6 +27,7 @@ class bcolors:
 
 liked_tags = {}
 
+#@login_required(login_url='/login')
 def index(request):
 
     global liked_tags
@@ -46,17 +47,17 @@ def index(request):
         ##print("liked_tags_json: ", liked_tags_json)
 
         paginator = Paginator(posts, 10)
-
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+        page_posts = paginator.get_page(page_number)
 
         return render(request, "network/index.html", {
             "posts": posts,
             "form": PostForm(),
-            "page_obj": page_obj,
+            "page_posts": page_posts,
             "liked_tags": liked_tags_json,
         })
-    else:  return render(request, "network/login.html")
+    else:
+        return render(request, "network/login.html")
 
 def login_view(request):
     if request.method == "POST":
@@ -131,6 +132,9 @@ def profile(request, username):
 
     user = request.user
 
+    print(f"{bcolors.WARNING}user (/profile): ", user)
+    print(f"{bcolors.WARNING}request.user (/profile): ", request.user)
+
     profile_user = get_object_or_404(User, username=username)
     followers_count = profile_user.followers.count()
     following_count = profile_user.following.count()
@@ -165,9 +169,12 @@ def unfollow_user(request, username):
 
 @login_required
 def following_posts(request):
-    followed_users = request.user.following.all()
-    posts = Posts.objects.filter(user__in=followed_users).order_by('-timestamp')
-    return render(request, "network/following_posts.html", {"posts": posts})
+    if (request.user.is_authenticated):
+        followed_users = request.user.following.all()
+        posts = Posts.objects.filter(user__in=followed_users).order_by('-timestamp')
+        return render(request, "network/following_posts.html", {"posts": posts})
+    else:
+        return HttpResponseRedirect(reverse("login"))
 
 @login_required
 def edit(request, id):

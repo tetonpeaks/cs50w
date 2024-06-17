@@ -3,7 +3,7 @@
 {% block title %}Following Posts{% endblock %}
 
 {% block body %}
-<h5>Posts from Users You Follow</h5>
+<h5 style="color: rgba(150, 111, 51, 1);">posts from users you follow</h5>
 {% for post in posts %}
 <div class="post">
     <p><b><a href="{% url 'profile' post.user.username %}">{{ post.user }}</a></b> - {{ post.timestamp }}</p>

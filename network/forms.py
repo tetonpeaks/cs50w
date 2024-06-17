@@ -1,4 +1,4 @@
-from django.forms import ModelForm, CharField
+from django.forms import ModelForm, CharField, Textarea
 from network.models import Posts
 
 class PostForm(ModelForm):
@@ -6,10 +6,12 @@ class PostForm(ModelForm):
             model = Posts
             fields = ['text']
 
-    text = CharField(
-        label='',
-        required=True,
-    )
+    #text = CharField(
+    #    label='',
+    #    required=True,
+    #)
+
+    text = CharField(label="", widget=Textarea())
 
     def clean_text(self):
         text = self.cleaned_data.get('text')
