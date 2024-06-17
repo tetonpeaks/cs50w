@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from . import util
 from .forms import WikiForm, EditForm
-from .models import Wiki, Edit
+#from .models import Wiki, Edit
 
 class bcolors:
     HEADER = '\033[95m'
@@ -78,8 +78,7 @@ def newwiki(request):
         wikiform = WikiForm(request.POST)
         if wikiform.is_valid():
             name = wikiform.cleaned_data['name']
-            text = Wiki(**wikiform.cleaned_data)
-            #text = wikiform.cleaned_data['text']
+            text = wikiform.cleaned_data['text']
             if name.upper() in (entry.upper() for entry in util.list_entries()):
                 return render(request, 'encyclopedia/error.html', {
                     "error": f"The wiki for {name} already exists."

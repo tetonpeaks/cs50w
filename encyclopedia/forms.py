@@ -1,31 +1,9 @@
-from django.forms import ModelForm, CharField, Textarea
+from django.forms import Form, ModelForm, CharField, Textarea
 
-from .models import Wiki, Edit
-
-from markdownx.fields import MarkdownxFormField
-
-class WikiForm(ModelForm):
-    class Meta:
-        model = Wiki
-        fields = ['name','text']
-
+class WikiForm(Form):
     name = CharField(label="name", max_length=20)
-    text = CharField(
-        label="text",
-        required=True,
-    )
+    text = CharField(label="text", widget=Textarea(attrs={'cols': 1, 'rows': 10}))
 
-    def clean_text(self):
-        text = self.cleaned_data.get('text')
-        if len(text) > 0:
-            return text
-        return self.errors
 
-class EditForm(ModelForm):
-    text = MarkdownxFormField()
-
-    class Meta:
-        model = Edit
-        fields = ['text']
-
+class EditForm(Form):
     text = CharField(label="text", widget=Textarea())

@@ -10,8 +10,27 @@
         {% csrf_token %}
         <h4>Wiki name:</h4>
         {{ form.name }}
-        <h4>Article content:</h4>
+        <div style="display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin-top: 0.5rem;
+        ">
+            <h4>Article content:</h4>
+            <input
+            type="submit"
+            value="Save WikiBear"
+            style="
+            font-style: bold;
+            color: rgba(0, 51, 102, 1);
+            background-color: rgba(253, 181, 21, 1);
+            border: 0.25rem solid rgba(0, 51, 102, 1);
+            border-radius: 0.25rem;
+            animation: pulsate 2s infinite alternate;
+            animation-delay: 1s;
+            transition: box-shadow 0.3s ease-in-out;
+            margin-bottom: 0.5rem;
+            ">
+        </div>
         {{ form.text }}
-        <input type="submit" value="Save Wiki">
     </form>
 {% endblock body %}
