@@ -43,7 +43,7 @@ function compose_submit() {
     })
     .then(response => response.json())
     .then(result => {
-            load_mailbox('sent');
+            load_mailbox('inbox');
         });
     return false;
 }
@@ -106,34 +106,45 @@ function load_email(id, mailbox) {
     fetch(`/emails/${id}`)
         .then(response => response.json())
         .then(email => {
-            console.log("email.recipients: ", email.recipients);
-            document.querySelector('#email-view').innerHTML = `
-            <div>From: ${email.sender}</div>
-            <div>To: ${email.recipients}</div>
-            <div>Subject: ${email.subject}</div>
-            <div>Timestamp: ${email.timestamp}</div>
+            if (sent_flag == true) {
+                document.querySelector('#email-view').innerHTML = `
+                <div>From: ${email.sender}</div>
+                <div>To: ${email.recipients}</div>
+                <div>Subject: ${email.subject}</div>
+                <div>Timestamp: ${email.timestamp}</div>
 
-            <div class="email-buttons">
-                <button class="btn-email" id="reply">Reply</button>
-                <button class="btn-email" id="archive">${email["archived"] ? "Unarchive" : "Archive"}</button>
-            </div>
-            <hr>
-            <div>
-                ${email.body}
-            </div>
+                <div class="email-buttons">
+                    <button class="btn-email" id="reply">Reply</button>
+                </div>
+                <textarea readonly>${email.body}</textarea>
+                `;
 
-          `;
+            } else {
+                document.querySelector('#email-view').innerHTML = `
+                <div>From: ${email.sender}</div>
+                <div>To: ${email.recipients}</div>
+                <div>Subject: ${email.subject}</div>
+                <div>Timestamp: ${email.timestamp}</div>
 
-        document.querySelector('#archive').addEventListener('click', () => {
-            fetch(`/emails/${id}`, {
-                    method: 'PUT',
-                    body: JSON.stringify({ archived: !email.archived })
+                <div class="email-buttons">
+                    <button class="btn-email" id="reply">Reply</button>
+                    <button class="btn-email" id="archive">${email["archived"] ? "Unarchive" : "Archive"}</button>
+                </div>
+                <textarea readonly>${email.body}</textarea>
+                `;
+
+                document.querySelector('#archive').addEventListener('click', () => {
+                    fetch(`/emails/${id}`, {
+                            method: 'PUT',
+                            body: JSON.stringify({ archived: !email.archived })
+                        })
+                        .then(email => {
+                            // console.log(email);
+                            load_mailbox('inbox');
+                        });
                 })
-                .then(email => {
-                    // console.log(email);
-                    load_mailbox('inbox');
-                });
-        })
+            }
+
         document.querySelector('#reply').addEventListener('click', () => {
 
             document.querySelector('#emails-view').style.display = 'none';
@@ -157,7 +168,7 @@ function load_email(id, mailbox) {
                 document.querySelector('#compose-subject').value = email.subject;
             }
 
-            document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote:\n${email.body}\n\n`;
+            document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote:\n\n${email.body}\n\n`;
         })
     })
 }
