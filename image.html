@@ -2,12 +2,30 @@
 <html lang="en">
     <head>
         <title>Image Search</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     </head>
     <style>
         body {
-            background-color: black;
+            background-color: rgba(255, 255, 255, 0.8);
             font-size: 16px;
         }
+        input, button {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-family: Roboto, arial, sans-serif;
+            font-size: 14px;
+            margin: 11px 4px;
+            padding: 0 16px;
+            line-height: 27px;
+            height: 36px;
+            min-width: 54px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        input { background-color: transparent; }
         .container0 {
             display: grid;
             grid-template-rows: repeat(2, auto);
@@ -27,10 +45,21 @@
 
             display: grid;
             grid-template-rows: repeat(2, auto);
+
+            width: 50%;
         }
         form {
             display: flex;
             flex-direction: column;
+        }
+        .query {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+        }
+        .query:hover, button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0.125rem 0.125rem -0.125rem rgb(220, 220, 220);
+            border: 0.0625rem solid rgb(220, 220, 220);
         }
         .query.image {
             border-radius: 0.25rem;
@@ -41,15 +70,42 @@
         <div class="container0">
             <div class="wrapper-btn">
                 <form action="index.html">
-                    <button class="search index">Google Search</button>
+                    <button class="search index">Stoogle Search</button>
                 </form>
             </div>
 
             <div class="google-search">
-                <form action="https://images.google.com/search">
+                <div style="
+                    display: grid;
+                    grid-template-columns: repeat(7, auto);
+                    font-family: 'Nunito', sans-serif;
+                    max-height: 230px;">
+                    <p style="color: rgba(66, 133, 244, 1); justify-self: center; font-size: 6rem">S</p>
+                    <p style="color: rgba(234, 67, 53, 1); justify-self: center; font-size: 6rem">t</p>
+                    <p style="color: rgba(255, 214, 0, 1); justify-self: center; font-size: 6rem">o</p>
+                    <p style="color: rgba(66, 133, 244, 1); justify-self: center; font-size: 6rem">o</p>
+                    <p style="color: rgba(52, 168, 83, 1); justify-self: center; font-size: 6rem">g</p>
+                    <p style="color: rgba(234, 67, 53, 1); justify-self: center; font-size: 6rem">l</p>
+                    <p style="color: rgba(255, 214, 0, 1); justify-self: center; font-size: 6rem">e</p>
+                </div>
+                <form action="https://images.google.com/search" target="_blank">
                     <input hidden="true" name="tbm" value="isch">
-                    <input class="query image" type="text" name="q" value="hockey">
-                    <input class="query submit" type="submit" value="Google Image Search">
+                    <input
+                        class="query image"
+                        type="text"
+                        name="q"
+                        value=""
+                        placeholder="Search Stoogle Images"
+                        style="
+                        min-height: 44px;
+                        background: #fff;
+                        border: 1px solid #dfe1e5;
+                        box-shadow: none;
+                        border-radius: 24px;
+                    ">
+                    <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                        <input class="query submit" type="submit" value="Stoogle Image Search">
+                    </div>
                 </form>
             </div>
         </div>

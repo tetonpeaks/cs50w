@@ -7,91 +7,146 @@
         body {
             background-color: #202124;
             font-size: 16px;
+            font-family: Arial, sans-serif;
+            margin: 0 !important;
         }
-        h3 { margin-bottom: 1rem; }
+        input, button {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-family: Roboto, arial, sans-serif;
+            font-size: 14px;
+            /* margin: 11px 4px; */
+            /* padding: 0 16px; */
+            line-height: 27px;
+            height: 36px;
+            min-width: 54px;
+            /* text-align: center; */
+            cursor: pointer;
+            user-select: none;
+        }
+        input { background-color: transparent; }
+
         .container0 {
             display: grid;
-            grid-template-rows: repeat(2, auto);
+            grid-template-rows: repeat(3, auto);
             grid-gap: 1rem;
         }
         .wrapper-btn {
             grid-row: 1;
             display: flex;
             justify-content: flex-end;
-            border-bottom: 2px solid white;
             padding-bottom: 0.5rem;
         }
         .search.index { margin-right: 0.5rem; }
         .google-search {
-            grid-row: 2;
+            grid-row: 3;
             justify-self: left;
 
             display: grid;
             grid-template-columns: repeat(2, auto);
-            grid-gap: 2rem;
+            grid-template-rows: repeat(5, auto);
+            grid-gap: 1rem;
 
             color: white;
+
+            margin: 25px 35px;
         }
         .col0 {
             grid-column: 1;
             display: grid;
             grid-template-rows: repeat(5, auto);
             color: #969ba1;
+
+            align-items: center;
+            margin-top: 0.5rem;
+
+            font-size: 13px;
         }
         form {
             grid-column: 2;
             display: grid;
             grid-template-rows: repeat(5, auto);
             color: white;
+            font-size: 13px;
         }
-
-        .form-group { padding-bottom: 1rem;}
+        .form-group { font-size: 13px; }
         .form-control {
             width: 350%;
             background-color: #202124;
             border: 1px solid #969ba1;
             color: white;
         }
-
+        .query {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+        }
+        .query:hover, button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0.125rem 0.125rem -0.125rem rgb(220, 220, 220);
+            border: 0.0625rem solid rgb(220, 220, 220);
+        }
         .query.submit {
             grid-row: 5;
             background-color: #8ab4f8;
-            color: white;
+            border: 1px solid #3079ed;
+            color: #202124;
             padding: 0rem;
+
+            font-size: 11px;
+            font-weight: bold;
+
+            border-radius: 2px;
 
             transform: translateX(255%)
         }
     </style>
     <body>
         <div class="container0">
-            <div class="wrapper-btn">
+            <div class="wrapper-btn" style="margin: 11px 4px;
+            padding: 0 16px;">
                 <form action="index.html">
-                    <button class="search index">Google Search</button>
+                    <button class="search index">Stoogle Search</button>
                 </form>
             </div>
 
+            <div style="border-bottom: 1px solid black;">
+                <p style="
+                grid-row: 2;
+                color: #f28b82;
+                font-size: 20px;
+                margin: 25px 35px;
+                ">Advanced Search</p>
+            </div>
+
             <div class="google-search">
-                <h3>Find pages with...</h3>
+                <p>Find pages with...</p>
                 <div class="col0">
-                    <div class="form-text">all these words:</div>
-                    <div class="form-text">this exact word or phrase:</div>
-                    <div class="form-text">any of these words:</div>
-                    <div class="form-text">none of these words:</div>
+                    <div class="form-text" style="grid-row: 1">all these words:</div>
+                    <div class="form-text" style="grid-row: 2">this exact word or phrase:</div>
+                    <div class="form-text" style="grid-row: 3">any of these words:</div>
+                    <div class="form-text" style="grid-row: 4">none of these words:</div>
                 </div>
-                <form action="https://www.google.com/search">
-                    <div class="form-group all">
-                        <input class="form-control all" type="text" name="as_q" value="hockey soccer">
+                <form
+                    action="https://www.google.com/search"
+                    target="_blank"
+                    style="margin-top: 1.25rem;
+                    grid-gap: 1.5rem;"
+                    >
+                    <div class="form-group all" style="grid-row: 1">
+                        <input class="form-control all" type="text" name="as_q" value="">
                     </div>
-                    <div class="form-group exact">
-                        <input class="form-control exact" type="text" name="as_epq" value="wayne zidane">
+                    <div class="form-group exact" style="grid-row: 2">
+                        <input class="form-control exact" type="text" name="as_epq" value="">
                     </div>
-                    <div class="form-group any">
-                        <input class="form-control any" type="text" name="as_oq" value="hockey soccer">
+                    <div class="form-group any" style="grid-row: 3">
+                        <input class="form-control any" type="text" name="as_oq" value="">
                     </div>
-                    <div class="form-group none">
-                        <input class="form-control none" type="text" name="as_eq" value="golf">
+                    <div class="form-group none" style="grid-row: 4">
+                        <input class="form-control none" type="text" name="as_eq" value="">
                     </div>
-                    <input class="query submit" type="submit" value="Advanced Search">
+                    <input class="query submit" style="grid-row: 5" type="submit" value="Advanced Search">
                 </form>
             </div>
         </div>
